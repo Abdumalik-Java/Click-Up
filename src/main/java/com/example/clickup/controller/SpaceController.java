@@ -1,9 +1,9 @@
 package com.example.clickup.controller;
 
-import com.example.clickup.dto.UserDto;
+import com.example.clickup.dto.SpaceDto;
 import com.example.clickup.model.Result;
-import com.example.clickup.model.User;
-import com.example.clickup.service.UserService;
+import com.example.clickup.model.Space;
+import com.example.clickup.service.SpaceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
@@ -15,45 +15,52 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/user")
-public class UserController {
+@RequestMapping("/space")
+public class SpaceController {
 
     @Autowired
-    UserService userService;
+    SpaceService service;
 
-    @GetMapping()
+    @GetMapping
     @PreAuthorize("hasAnyRole('SUPER_ADMIN','ADMIN', 'USER')")
     public HttpEntity<?> readAll() {
-        List<User> allUsers = userService.getAllUsers();
-        return new ResponseEntity<>(allUsers, HttpStatus.OK);
+        List<Space> all = service.getAll();
+        return new ResponseEntity<>(all, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('SUPER_ADMIN','ADMIN', 'USER')")
     public HttpEntity<?> readById(@PathVariable UUID id) {
-        User byId = userService.getById(id);
-        return new ResponseEntity<>(byId, HttpStatus.OK);
+        Space space = service.getById(id);
+        return new ResponseEntity<>(space, HttpStatus.OK);
+    }
+
+    @GetMapping("/{name}")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN','ADMIN', 'USER')")
+    public HttpEntity<?> readByName(@PathVariable String name) {
+        Space space = service.getByName(name);
+        return new ResponseEntity<>(space, HttpStatus.OK);
     }
 
     @PostMapping
     @PreAuthorize("hasAnyRole('SUPER_ADMIN','ADMIN')")
-    public HttpEntity<?> create(@RequestBody UserDto userDto) {
-        Result result = userService.create(userDto);
+    public HttpEntity<?> create(@RequestBody SpaceDto dto) {
+        Result result = service.create(dto);
         return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAnyRole('SUPER_ADMIN','ADMIN')")
-    public HttpEntity<?> update(@PathVariable UUID id, @RequestBody UserDto userDto) {
-        Result result = userService.update(userDto, id);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+    public HttpEntity<?> update(@PathVariable UUID id, @RequestBody SpaceDto dto) {
+        Result update = service.update(dto, id);
+        return new ResponseEntity<>(update, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyRole('SUPER_ADMIN','ADMIN')")
     public HttpEntity<?> delete(@PathVariable UUID id) {
-        Result result = userService.delete(id);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        Result delete = service.delete(id);
+        return new ResponseEntity<>(delete, HttpStatus.OK);
     }
 
 }

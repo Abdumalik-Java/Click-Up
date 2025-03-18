@@ -1,9 +1,9 @@
 package com.example.clickup.controller;
 
-import com.example.clickup.dto.UserDto;
+import com.example.clickup.dto.WorkspaceDto;
 import com.example.clickup.model.Result;
-import com.example.clickup.model.User;
-import com.example.clickup.service.UserService;
+import com.example.clickup.model.Workspace;
+import com.example.clickup.service.WorkspaceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
@@ -15,44 +15,44 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/user")
-public class UserController {
+@RequestMapping("/workspace")
+public class WorkspaceController {
 
     @Autowired
-    UserService userService;
+    WorkspaceService service;
 
-    @GetMapping()
+    @GetMapping
     @PreAuthorize("hasAnyRole('SUPER_ADMIN','ADMIN', 'USER')")
     public HttpEntity<?> readAll() {
-        List<User> allUsers = userService.getAllUsers();
-        return new ResponseEntity<>(allUsers, HttpStatus.OK);
+        List<Workspace> all = service.findAll();
+        return new ResponseEntity<>(all, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('SUPER_ADMIN','ADMIN', 'USER')")
-    public HttpEntity<?> readById(@PathVariable UUID id) {
-        User byId = userService.getById(id);
+    public HttpEntity<?> readOne(@PathVariable UUID id) {
+        Workspace byId = service.findById(id);
         return new ResponseEntity<>(byId, HttpStatus.OK);
     }
 
     @PostMapping
     @PreAuthorize("hasAnyRole('SUPER_ADMIN','ADMIN')")
-    public HttpEntity<?> create(@RequestBody UserDto userDto) {
-        Result result = userService.create(userDto);
+    public HttpEntity<?> create(@RequestBody WorkspaceDto workspaceDto) {
+        Result result = service.create(workspaceDto);
         return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAnyRole('SUPER_ADMIN','ADMIN')")
-    public HttpEntity<?> update(@PathVariable UUID id, @RequestBody UserDto userDto) {
-        Result result = userService.update(userDto, id);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+    public HttpEntity<?> update(@PathVariable UUID id, @RequestBody WorkspaceDto workspaceDto) {
+        Result update = service.update(workspaceDto, id);
+        return new ResponseEntity<>(update, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyRole('SUPER_ADMIN','ADMIN')")
     public HttpEntity<?> delete(@PathVariable UUID id) {
-        Result result = userService.delete(id);
+        Result result = service.delete(id);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
