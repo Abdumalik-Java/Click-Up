@@ -43,21 +43,21 @@ public class TaskController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAnyRole('SUPER_ADMIN','ADMIN')")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN','ADMIN','USER')")
     public HttpEntity<?> create(@RequestBody TaskDto taskDto) {
         Result result = service.create(taskDto);
         return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAnyRole('SUPER_ADMIN','ADMIN')")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN','ADMIN','USER')")
     public HttpEntity<?> update(@PathVariable UUID id, @RequestBody TaskDto taskDto) {
         Result update = service.update(taskDto, id);
         return new ResponseEntity<>(update, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAnyRole('SUPER_ADMIN','ADMIN')")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN','ADMIN','USER')")
     public HttpEntity<?> delete(@PathVariable UUID id) {
         Result result = service.delete(id);
         return new ResponseEntity<>(result, HttpStatus.OK);

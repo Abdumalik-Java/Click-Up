@@ -36,21 +36,21 @@ public class WorkspaceRoleController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAnyRole('SUPER_ADMIN','ADMIN')")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN','ADMIN', 'USER')")
     public HttpEntity<?> create(@RequestBody WorkspaceRoleDto workspaceRoleDto) {
         Result result = workspaceRoleService.create(workspaceRoleDto);
         return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAnyRole('SUPER_ADMIN','ADMIN')")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN','ADMIN', 'USER')")
     public HttpEntity<?> update(@PathVariable UUID id, @RequestBody WorkspaceRoleDto workspaceRoleDto) {
         Result update = workspaceRoleService.update(workspaceRoleDto, id);
         return new ResponseEntity<>(update, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAnyRole('SUPER_ADMIN','ADMIN')")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN','ADMIN', 'USER')")
     public HttpEntity<?> delete(@PathVariable UUID id) {
         Result delete = workspaceRoleService.delete(id);
         return new ResponseEntity<>(delete, HttpStatus.OK);

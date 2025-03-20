@@ -36,21 +36,21 @@ public class CommentController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAnyRole('SUPER_ADMIN','ADMIN')")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN','ADMIN','USER')")
     public HttpEntity<?> create(@RequestBody CommentDto commentDto) {
         Result result = service.create(commentDto);
         return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAnyRole('SUPER_ADMIN','ADMIN')")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN','ADMIN','USER')")
     public HttpEntity<?> update(@PathVariable UUID id, @RequestBody CommentDto commentDto) {
         Result update = service.update(commentDto, id);
         return ResponseEntity.status(200).body(update);
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAnyRole('SUPER_ADMIN','ADMIN')")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN','ADMIN','USER')")
     public HttpEntity<?> delete(@PathVariable UUID id) {
         Result delete = service.delete(id);
         return ResponseEntity.status(200).body(delete);

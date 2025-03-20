@@ -43,7 +43,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAnyRole('SUPER_ADMIN','ADMIN')")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN','ADMIN','USER')")
     public HttpEntity<?> update(@PathVariable UUID id, @RequestBody UserDto userDto) {
         Result result = userService.update(userDto, id);
         return new ResponseEntity<>(result, HttpStatus.OK);

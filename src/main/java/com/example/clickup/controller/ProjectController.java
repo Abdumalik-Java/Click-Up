@@ -43,21 +43,21 @@ public class ProjectController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAnyRole('SUPER_ADMIN','ADMIN')")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN','ADMIN', 'USER')")
     public HttpEntity<?> create(@RequestBody ProjectDto projectDto) {
         Result result = service.create(projectDto);
         return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAnyRole('SUPER_ADMIN','ADMIN')")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN','ADMIN', 'USER')")
     public HttpEntity<?> update(@PathVariable UUID id, @RequestBody ProjectDto projectDto) {
         Result update = service.update(projectDto, id);
         return new ResponseEntity<>(update, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAnyRole('SUPER_ADMIN','ADMIN')")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN','ADMIN', 'USER')")
     public HttpEntity<?> delete(@PathVariable UUID id) {
         Result result = service.delete(id);
         return new ResponseEntity<>(result, HttpStatus.OK);
